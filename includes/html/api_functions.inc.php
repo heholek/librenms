@@ -2021,9 +2021,16 @@ function list_fdb(\Illuminate\Http\Request $request)
 }
 
 
-function list_sensors()
+function list_sensors(\Illuminate\Http\Request $request)
 {
-    $sensors = Sensor::hasAccess(Auth::user())->get();
+    $hostname = $request->route('hostname');
+
+    $device_id = ctype_digit($hostname) ? $hostname : getidbyname($hostname);
+     
+    $sensors = Sensor::hasAccess(Auth::user())
+    ->when(!empty($device_id), function (Builder $query) use ($device_id) {
+        return $query->where('device_id', $device_id);
+    })->get();
     $total_sensors = $sensors->count();
     if ($total_sensors == 0) {
         return api_error(404, 'Sensors do not exist');

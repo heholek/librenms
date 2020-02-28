@@ -890,12 +890,15 @@ Route: `/api/v0/resources/sensors`
 
 Input:
 
+- hostname: Filter the sensors from the specfied hostname or device ID
+
   -
 
 Example:
 
 ```curl
 curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/resources/sensors
+curl -H 'X-Auth-Token: YOURAPITOKENHERE' https://librenms.org/api/v0/resources/sensors?hostname=mydevice
 ```
 
 Output:
